@@ -50,7 +50,7 @@ export default function Navbar() {
                             <a
                                 key={key}
                                 href={item.href}
-                                className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                                className="text-foreground/80 cosmic-button hover:text-primary transition-colors duration-300"
                             >
                                 {item.name}
                             </a>

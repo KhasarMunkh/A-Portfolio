@@ -1,5 +1,6 @@
 import tetris from "../assets/tetris.png";
 import ascii from "../assets/go-ascii.png";
+import { Github } from "lucide-react";
 const projects = [
   {
     id: 1,
@@ -7,7 +8,7 @@ const projects = [
     description: "a project descriotn goes here!",
     image: tetris,
     tags: ["React", "Tailwind", "Next.js"],
-    gitUrl: "#",
+    gitUrl: "https://github.com/KhasarMunkh/multiplayer-tetris",
   },
   {
     id: 2,
@@ -15,7 +16,7 @@ const projects = [
     description: "a project descriotn goes here!",
     image: tetris,
     tags: ["React", "Tailwind", "Next.js"],
-    gitUrl: "#",
+    gitUrl: "https://github.com/KhasarMunkh/multiplayer-tetris",
   },
   {
     id: 3,
@@ -23,7 +24,7 @@ const projects = [
     description: "a project descriotn goes here!",
     image: ascii,
     tags: ["React", "Tailwind", "Next.js"],
-    gitUrl: "#",
+    gitUrl: "https://github.com/KhasarMunkh/multiplayer-tetris",
   },
 ];
 
@@ -64,7 +65,21 @@ export default function ProjectsSection() {
                   ))}
                 </div>
               </div>
-              <div></div>
+              <div>
+                <h3 className="text-xl font-semibold mb-2 px-6">
+                  {project.title}
+                </h3>
+                <p className="text-muted-foreground mb-4 px-6">
+                  {project.description}
+                </p>
+                <a
+                  target="_blank"
+                  href={project.gitUrl}
+                  className="text-foreground/80 hover:text-primary transition-colors duration-300 px-6 pb-6 inline-block"
+                >
+                  <Github size={20}/>
+                </a>
+              </div>
             </div>
           ))}
         </div>
