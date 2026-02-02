@@ -1,0 +1,13 @@
+@theme inline {
+  --animate-blink: blink 3s cubic-bezier(0.2, 1, 0.8, 1) infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
