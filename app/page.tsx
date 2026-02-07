@@ -1,7 +1,9 @@
 import ProjectCard from "@/components/ProjectCard";
+import ThemePicker from "@/components/ThemePicker";
+import ContactCard from "@/components/ContactCard";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub, FaLinkedin, FaLinkedinIn } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -65,7 +67,6 @@ export default function Home() {
             image={{ src: "/projects/go-ascii.png", alt: "image of go-ascii" }}
             title="Go-Ascii"
             description="A Go command-line tool that converts images into ASCII, ANSI, or Braille art with optional image filters like blur, posterize, and contrast adjustments."
-
             tags={["Go", "CLI", "Image Processing", "Text Art"]}
           />
           {/* Project 2: Termfolio */}
@@ -77,8 +78,25 @@ export default function Home() {
             }}
             title="Termfolio"
             description="An interactive terminal-based portfolio website that runs in the browser, allowing visitors to explore projects and skills through a sandboxed Docker-powered shell experience"
-            tags={["TS", "Express", "Docker", "Node", "AWS EC2", "Caddy", "WebSocket"]}
+            tags={[
+              "TS",
+              "Express",
+              "Docker",
+              "Node",
+              "AWS EC2",
+              "Caddy",
+              "WebSocket",
+            ]}
           />
+        </div>
+      </section>
+
+      {/* Section 3: Knick Knacks */}
+      <section className="px-4 md:px-0">
+        <div className="grid grid-cols-1 justify-center gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
+          <ThemePicker />
+          <ContactCard />
+          <ContactCard />
         </div>
       </section>
     </div>
