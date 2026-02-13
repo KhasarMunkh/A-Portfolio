@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { FaTags } from "react-icons/fa";
 import { getTagColor } from "@/lib/tags";
@@ -29,14 +29,17 @@ export default function ProjectCard({
         rounded-xl
         border-2
         border-surface1
-        transition-color duration-200 ease-out hover:border-pink
+        transition-color duration-200 ease-out hover:border-accent
         transition-transform hover:scale-[1.01] 
-        focus-visible:border-pink focus-visible:outline-none
+        focus-visible:border-accent focus-visible:outline-none
       "
       >
         <div className="rounded-lg bg-base overflow-hidden">
-          {/* Row 1: Image*/}
-          <figure className="relative aspect-video w-full">
+          {/* Row 1: Image */}
+          <figure
+            className="relative aspect-video w-full"
+            style={{ viewTransitionName: `project-image-${slug}` }}
+          >
             <Image
               src={image.src}
               alt={image.alt}
@@ -48,7 +51,12 @@ export default function ProjectCard({
 
           {/* Row 2: Title + description */}
           <div className="flex flex-col p-4 pb-0">
-            <h3 className="text-lg font-semibold">{title}</h3>
+            <h3
+              className="text-lg font-semibold"
+              style={{ viewTransitionName: `project-title-${slug}` }}
+            >
+              {title}
+            </h3>
             <p className="mt-2 text-sm text-subtext1 line-clamp-3">
               {description}
             </p>
@@ -57,7 +65,7 @@ export default function ProjectCard({
           {/* Row 3: Tags */}
           {tags.length > 0 && (
             <div className="flex max-h-8 gap-2 p-4 flex-wrap overflow-hidden pt-3 text-xs items-center">
-              <FaTags className="text-teal shrink-0" />
+              <FaTags className="text-accent shrink-0" />
               {tags.map((tag, i) => (
                 <span
                   key={i}

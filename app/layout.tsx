@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -18,11 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-base text-text">
-      <body className={`${jetbrainsMono.className}`}>
-        <NavBar />
-        {children}
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="en" className="bg-base text-text">
+        <body className={`${jetbrainsMono.className}`}>
+          <ThemeProvider>
+            <NavBar />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

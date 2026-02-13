@@ -1,9 +1,23 @@
+import { readFile } from "fs/promises";
+import { join } from "path";
+
 export interface Project {
   slug: string;
   image: { src: string; alt: string };
   title: string;
   description: string;
   tags: string[];
+  repo?: string;
+  live?: string;
+}
+
+export async function getProjectContent(slug: string): Promise<string> {
+  const filePath = join(process.cwd(), "content", "projects", `${slug}.md`);
+  try {
+    return await readFile(filePath, "utf-8");
+  } catch {
+    return "";
+  }
 }
 
 export const goAscii: Project = {
@@ -13,6 +27,7 @@ export const goAscii: Project = {
   description:
     "A Go command-line tool that converts images into ASCII, ANSI, or Braille art with optional image filters like blur, posterize, and contrast adjustments.",
   tags: ["Go", "CLI", "Image Processing", "Text Art"],
+  repo: "https://github.com/KhasarMunkh/go-ascii",
 };
 
 export const termfolio: Project = {
@@ -25,6 +40,7 @@ export const termfolio: Project = {
   description:
     "An interactive terminal-based portfolio website that runs in the browser, allowing visitors to explore projects and skills through a sandboxed Docker-powered shell experience",
   tags: ["TS", "Express", "Docker", "Node", "AWS EC2", "Caddy", "WebSocket"],
+  repo: "https://github.com/KhasarMunkh/termfolio",
 };
 
 export const soloLeveler: Project = {
@@ -43,11 +59,12 @@ export const soloLeveler: Project = {
     "Productivity",
     "Mobile App",
   ],
+  repo: "https://github.com/KhasarMunkh/sololeveler",
 };
 
 export const tetris: Project = {
   slug: "tetris",
-  image: { src: "/projects/tetris.png", alt: "image of go-ascii" },
+  image: { src: "/projects/tetris.png", alt: "image of multiplayer tetris" },
   title: "Multiplayer Tetris",
   description:
     "A real-time multiplayer Tetris game with ELO matchmaking, garbage attack mechanics, and SRS rotation, built with React, TS, Socket.IO, and MongoDB.",
@@ -61,6 +78,7 @@ export const tetris: Project = {
     "Game",
     "Vite",
   ],
+  repo: "https://github.com/KhasarMunkh/tetris",
 };
 
 export const ufc: Project = {
@@ -78,6 +96,7 @@ export const ufc: Project = {
     "Sports Analytics",
     "UFC",
   ],
+  repo: "https://github.com/KhasarMunkh/ufc",
 };
 
 export const esportsDash: Project = {
@@ -89,7 +108,6 @@ export const esportsDash: Project = {
   title: "Esports Dash",
   description:
     "A real-time League of Legends esports dashboard built with Next.js that displays live matches, upcoming schedules, tournaments, and professional player profiles using PandaScore API data.",
-
   tags: [
     "Next.js",
     "TS",
@@ -99,6 +117,7 @@ export const esportsDash: Project = {
     "SWR",
     "Real-time Dashboard",
   ],
+  repo: "https://github.com/KhasarMunkh/esportsdash",
 };
 
 export const projects = [goAscii, termfolio, soloLeveler, tetris, ufc, esportsDash];

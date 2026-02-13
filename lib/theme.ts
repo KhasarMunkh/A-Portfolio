@@ -1,6 +1,5 @@
 import { useSyncExternalStore } from "react";
 import { createPersistentStore } from "./hooks/usePersistentStore";
-import { useCallback, useRef, useEffect } from "react";
 
 // --- Palettes ---
 export const paletteNames = ['latte', 'frappe', 'macchiato', 'mocha'] as const;
@@ -41,3 +40,18 @@ export const accentColorNames = [
 	'lavender'
 ] as const;
 export type AccentColorName = (typeof accentColorNames)[number];
+
+export const accentStore = createPersistentStore<AccentColorName>(
+  "accent",
+  "mauve",
+  accentColorNames,
+);
+
+export function useAccent() {
+  const accent = useSyncExternalStore(
+    accentStore.subscribe,
+    accentStore.getSnapshot,
+    accentStore.getServerSnapshot,
+  );
+  return [accent, accentStore.set] as const;
+}

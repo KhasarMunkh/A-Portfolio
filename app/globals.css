@@ -137,9 +137,11 @@
   --color-mantle: var(--catppuccin-color-mantle);
   --color-crust: var(--catppuccin-color-crust);
 }
+:root {
+  --catppuccin-color-accent: var(--catppuccin-color-mauve);
+}
 @layer base {
   :root {
-    --catppuccin-color-accent: var(--catppuccin-latte-mauve);
     --catppuccin-color-rosewater: var(--catppuccin-latte-rosewater);
     --catppuccin-color-flamingo: var(--catppuccin-latte-flamingo);
     --catppuccin-color-pink: var(--catppuccin-latte-pink);
@@ -169,7 +171,6 @@
   }
   @variant dark {
     :root {
-      --catppuccin-color-accent: var(--catppuccin-mocha-mauve);
       --catppuccin-color-rosewater: var(--catppuccin-mocha-rosewater);
       --catppuccin-color-flamingo: var(--catppuccin-mocha-flamingo);
       --catppuccin-color-pink: var(--catppuccin-mocha-pink);
@@ -199,7 +200,6 @@
     }
   }
   .latte {
-    --catppuccin-color-accent: var(--catppuccin-latte-mauve);
     --catppuccin-color-rosewater: var(--catppuccin-latte-rosewater);
     --catppuccin-color-flamingo: var(--catppuccin-latte-flamingo);
     --catppuccin-color-pink: var(--catppuccin-latte-pink);
@@ -228,7 +228,6 @@
     --catppuccin-color-crust: var(--catppuccin-latte-crust);
   }
   .frappe {
-    --catppuccin-color-accent: var(--catppuccin-frappe-mauve);
     --catppuccin-color-rosewater: var(--catppuccin-frappe-rosewater);
     --catppuccin-color-flamingo: var(--catppuccin-frappe-flamingo);
     --catppuccin-color-pink: var(--catppuccin-frappe-pink);
@@ -257,7 +256,6 @@
     --catppuccin-color-crust: var(--catppuccin-frappe-crust);
   }
   .macchiato {
-    --catppuccin-color-accent: var(--catppuccin-macchiato-mauve);
     --catppuccin-color-rosewater: var(--catppuccin-macchiato-rosewater);
     --catppuccin-color-flamingo: var(--catppuccin-macchiato-flamingo);
     --catppuccin-color-pink: var(--catppuccin-macchiato-pink);
@@ -286,7 +284,6 @@
     --catppuccin-color-crust: var(--catppuccin-macchiato-crust);
   }
   .mocha {
-    --catppuccin-color-accent: var(--catppuccin-mocha-mauve);
     --catppuccin-color-rosewater: var(--catppuccin-mocha-rosewater);
     --catppuccin-color-flamingo: var(--catppuccin-mocha-flamingo);
     --catppuccin-color-pink: var(--catppuccin-mocha-pink);
@@ -319,3 +316,17 @@
 @custom-variant frappe (&:where(.frappe, .frappe *));
 @custom-variant macchiato (&:where(.macchiato, .macchiato *));
 @custom-variant mocha (&:where(.mocha, .mocha *));
+
+/* View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0ms;
+  }
+}

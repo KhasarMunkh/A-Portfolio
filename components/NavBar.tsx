@@ -1,21 +1,22 @@
 "use client";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react/jsx-runtime";
+import ThemePicker from "@/components/ThemePicker";
 
 export default function NavBar() {
   return (
     <header
       className="sticky top-0 z-10 select-none
-    backdrop-blur-lg bg-base/5 border-b border-mauve/10"
+    backdrop-blur-lg bg-base/5 border-b border-accent/10"
     >
       <div className="mx-auto max-w-6xl flex h-15 items-center justify-between px-4">
         <Breadcrumb />
-        <nav className="flex gap-6">
+        <nav className="flex items-center gap-6">
           <Link href="/">Home</Link>
           <Link href="/projects">Projects</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
+          <ThemePicker />
         </nav>
       </div>
     </header>
