@@ -1,6 +1,7 @@
 import ProjectCard from "@/components/ProjectCard";
 import ThemePicker from "@/components/ThemePicker";
 import ContactCard from "@/components/ContactCard";
+import LoLRankCard from "@/components/LoLRankCard";
 import { goAscii, termfolio } from "@/lib/projects";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
@@ -9,7 +10,7 @@ import { FaRegStar } from "react-icons/fa6";
 
 export default function Home() {
     return (
-        <div className="mx-auto max-w-6xl space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
+        <div className="mx-auto max-w-7xl space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
             {/* Section 1: Intro/hero */}
             <section className="space-y-5 px-4 md:px-0 flex gap-6">
                 <div className="relative size-64">
@@ -88,6 +89,7 @@ export default function Home() {
             <section className="px-4 md:px-0">
                 <div className="grid grid-cols-1 justify-center gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
                     <ThemePicker />
+                    <LoLRankCard />
                     <ContactCard />
                     <ContactCard />
                 </div>

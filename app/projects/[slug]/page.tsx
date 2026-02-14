@@ -30,7 +30,7 @@ export default async function ProjectPage({
   const headings = extractHeadings(content);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 md:py-12">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:py-12">
       {/* Back link */}
       <Link
         href="/projects"
