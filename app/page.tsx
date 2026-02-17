@@ -1,18 +1,25 @@
 import ProjectCard from "@/components/ProjectCard";
-import ThemePicker from "@/components/ThemePicker";
 import ContactCard from "@/components/ContactCard";
 import GitHubCommitsCard from "@/components/GitHubCommitsCard";
 import LoLRankCard from "@/components/LoLRankCard";
 import ClickerCard from "@/components/ClickerCard";
 import TypingTestCard from "@/components/TypingTestCard";
 import DrumPadCard from "@/components/DrumPadCard";
-import { goAscii, termfolio } from "@/lib/projects";
+import { goAscii, termfolio, getGitHubData } from "@/lib/projects";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa6";
 
-export default function Home() {
+export default async function Home() {
+    const featured = [goAscii, termfolio];
+    const githubDataEntries = await Promise.all(
+        featured
+            .filter((p) => p.repo)
+            .map(async (p) => [p.slug, await getGitHubData(p.repo!)] as const),
+    );
+    const githubDataMap = new Map(githubDataEntries);
+
     return (
         <div className="mx-auto max-w-7xl space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
             {/* Section 1: Intro/hero */}
@@ -84,8 +91,13 @@ export default function Home() {
                 </div>
                 {/* Project 1: Go-Ascii */}
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    <ProjectCard {...goAscii} />
-                    <ProjectCard {...termfolio} />
+                    {featured.map((project) => (
+                        <ProjectCard
+                            key={project.slug}
+                            {...project}
+                            githubData={githubDataMap.get(project.slug)}
+                        />
+                    ))}
                 </div>
             </section>
 

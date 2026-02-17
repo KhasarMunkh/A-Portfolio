@@ -1,28 +1,32 @@
 import { Link } from "next-view-transitions";
-import Image from "next/image";
 import { FaTags } from "react-icons/fa";
 import { getTagColor } from "@/lib/tags";
+import TerminalCard from "@/components/TerminalCard";
+import type { GitHubData } from "@/lib/projects";
 
 interface ProjectCardProps {
   slug: string;
-  image: { src: string; alt: string };
   title: string;
   description: string;
   tags: string[];
+  repo?: string;
+  githubData?: GitHubData | null;
 }
 
 export default function ProjectCard({
   slug,
-  image,
   title,
   description,
   tags,
+  repo,
+  githubData,
 }: ProjectCardProps) {
   return (
-    <article>
+    <article className="w-full">
       <Link
         href={`/projects/${slug}`}
         className="
+        h-full
         grid grid-rows-[auto_1fr_auto]
         overflow-hidden
         p-4
@@ -34,18 +38,17 @@ export default function ProjectCard({
         focus-visible:border-accent focus-visible:outline-none
       "
       >
-        <div className="rounded-lg bg-base overflow-hidden">
-          {/* Row 1: Image */}
+        <div className="rounded-lg bg-base overflow-hidden h-full">
+          {/* Row 1: Terminal Card */}
           <figure
-            className="relative aspect-video w-full"
+            className="w-full overflow-hidden"
             style={{ viewTransitionName: `project-image-${slug}` }}
           >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              sizes="(min-width: 1024px) 33vw, 100vw"
-              className="object-cover"
+            <TerminalCard
+              githubData={githubData}
+              title={title}
+              description={description}
+              repo={repo}
             />
           </figure>
 

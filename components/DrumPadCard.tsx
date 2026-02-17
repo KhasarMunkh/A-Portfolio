@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { PiMusicNotesBold } from "react-icons/pi";
 
 interface Pad {
@@ -28,13 +28,12 @@ const keyToPadIndex = new Map(pads.map((p, i) => [p.key, i]));
 
 export default function DrumPadCard() {
     const audioCtxRef = useRef<AudioContext | null>(null);
-    const [activePads, setActivePads] = useState<Set<number>>(new Set());
+    const padRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
     const getAudioCtx = useCallback(() => {
         if (!audioCtxRef.current) {
             audioCtxRef.current = new AudioContext();
         }
-        // Resume if suspended (browser autoplay policy)
         if (audioCtxRef.current.state === "suspended") {
             audioCtxRef.current.resume();
         }
@@ -62,15 +61,14 @@ export default function DrumPadCard() {
             osc.start(ctx.currentTime);
             osc.stop(ctx.currentTime + pad.decay);
 
-            // Visual feedback
-            setActivePads((prev) => new Set(prev).add(index));
-            setTimeout(() => {
-                setActivePads((prev) => {
-                    const next = new Set(prev);
-                    next.delete(index);
-                    return next;
-                });
-            }, 150);
+            // Visual feedback via direct DOM manipulation — no React re-render
+            const el = padRefs.current[index];
+            if (el) {
+                el.classList.add("animate-pad-flash");
+                setTimeout(() => {
+                    el.classList.remove("animate-pad-flash");
+                }, 150);
+            }
         },
         [getAudioCtx],
     );
@@ -78,7 +76,6 @@ export default function DrumPadCard() {
     // Keyboard support
     useEffect(() => {
         function handleKeyDown(e: KeyboardEvent) {
-            // Don't capture if user is typing in an input
             if (
                 e.target instanceof HTMLInputElement ||
                 e.target instanceof HTMLTextAreaElement
@@ -106,27 +103,22 @@ export default function DrumPadCard() {
 
             {/* 3x3 pad grid */}
             <div className="grid grid-cols-3 gap-1.5">
-                {pads.map((pad, i) => {
-                    const isActive = activePads.has(i);
-                    return (
-                        <button
-                            key={pad.label}
-                            onPointerDown={() => playTone(pad, i)}
-                            className={`flex cursor-pointer flex-col items-center justify-center rounded-lg py-3 transition-all duration-100 select-none ${isActive ? "animate-pad-flash" : ""}`}
-                            style={{
-                                backgroundColor: pad.color,
-                                opacity: isActive ? 1 : 0.7,
-                            }}
-                        >
-                            <span className="text-xs font-bold text-base">
-                                {pad.label}
-                            </span>
-                            <span className="text-[9px] uppercase text-base/70">
-                                {pad.key}
-                            </span>
-                        </button>
-                    );
-                })}
+                {pads.map((pad, i) => (
+                    <button
+                        key={pad.label}
+                        ref={(el) => { padRefs.current[i] = el; }}
+                        onPointerDown={() => playTone(pad, i)}
+                        className="flex cursor-pointer flex-col items-center justify-center rounded-lg py-3 opacity-70 select-none"
+                        style={{ backgroundColor: pad.color }}
+                    >
+                        <span className="text-xs font-bold text-base">
+                            {pad.label}
+                        </span>
+                        <span className="text-[9px] uppercase text-base/70">
+                            {pad.key}
+                        </span>
+                    </button>
+                ))}
             </div>
 
             {/* Hint */}

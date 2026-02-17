@@ -1,18 +1,34 @@
-import { projects } from "@/lib/projects";
+import { projects, getGitHubData } from "@/lib/projects";
+import type { GitHubData } from "@/lib/projects";
 import ProjectCard from "@/components/ProjectCard";
 import { FaFolderOpen } from "react-icons/fa";
 
-export default function ProjectPage() {
+export default async function ProjectPage() {
+  // Fetch GitHub data for all projects with a repo
+  const githubDataMap = new Map<string, GitHubData | null>();
+  await Promise.all(
+    projects
+      .filter((p) => p.repo)
+      .map(async (p) => {
+        const data = await getGitHubData(p.repo!);
+        githubDataMap.set(p.slug, data);
+      }),
+  );
+
   return (
-    <div className="mx-auto max-w-7xl space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
+      <div className="mx-auto max-w-450 space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
       <div className="flex items-center gap-4">
         <FaFolderOpen className="text-accent text-4xl"/>
         <h1 className="text-4xl font-bold text-left text-text">Projects</h1>
       </div>
       {projects.length > 0 && (
-        <div className="gap-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-6 grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           {projects.map((project) => (
-            <ProjectCard key={project.slug} {...project} />
+            <ProjectCard
+              key={project.slug}
+              {...project}
+              githubData={githubDataMap.get(project.slug)}
+            />
           ))}
         </div>
       )}

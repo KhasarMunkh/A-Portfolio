@@ -3,12 +3,52 @@ import { join } from "path";
 
 export interface Project {
   slug: string;
-  image: { src: string; alt: string };
   title: string;
   description: string;
   tags: string[];
   repo?: string;
   live?: string;
+}
+
+export interface GitHubData {
+  owner: string;
+  name: string;
+  description: string;
+  stars: number;
+  avatarUrl: string;
+}
+
+const ghCache = new Map<string, GitHubData>();
+
+export async function getGitHubData(repoUrl: string): Promise<GitHubData | null> {
+  if (ghCache.has(repoUrl)) return ghCache.get(repoUrl)!;
+
+  // Extract owner/repo from "https://github.com/Owner/Repo"
+  const match = repoUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
+  if (!match) return null;
+
+  const [, owner, repo] = match;
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    const result: GitHubData = {
+      owner: data.owner?.login ?? owner,
+      name: data.name ?? repo,
+      description: data.description ?? "",
+      stars: data.stargazers_count ?? 0,
+      avatarUrl: data.owner?.avatar_url ?? "",
+    };
+
+    ghCache.set(repoUrl, result);
+    return result;
+  } catch {
+    return null;
+  }
 }
 
 export async function getProjectContent(slug: string): Promise<string> {
@@ -22,7 +62,6 @@ export async function getProjectContent(slug: string): Promise<string> {
 
 export const goAscii: Project = {
   slug: "go-ascii",
-  image: { src: "/projects/go-ascii.png", alt: "image of go-ascii" },
   title: "Go-Ascii",
   description:
     "A Go command-line tool that converts images into ASCII, ANSI, or Braille art with optional image filters like blur, posterize, and contrast adjustments.",
@@ -32,10 +71,6 @@ export const goAscii: Project = {
 
 export const termfolio: Project = {
   slug: "termfolio",
-  image: {
-    src: "/projects/termfolio.png",
-    alt: "image of termfolio",
-  },
   title: "Termfolio",
   description:
     "An interactive terminal-based portfolio website that runs in the browser, allowing visitors to explore projects and skills through a sandboxed Docker-powered shell experience",
@@ -45,7 +80,6 @@ export const termfolio: Project = {
 
 export const soloLeveler: Project = {
   slug: "sololeveler",
-  image: { src: "/projects/sololeveler.webp", alt: "image of sololeveler app" },
   title: "Solo Leveler",
   description:
     "A gamified personal development mobile app built with Expo/React Native where users set weekly goals across fitness, school, work, and habits. Features AI-powered schedule generation, XP/leveling system, streaks, and boss battles for motivation.",
@@ -64,7 +98,6 @@ export const soloLeveler: Project = {
 
 export const tetris: Project = {
   slug: "tetris",
-  image: { src: "/projects/tetris.png", alt: "image of multiplayer tetris" },
   title: "Multiplayer Tetris",
   description:
     "A real-time multiplayer Tetris game with ELO matchmaking, garbage attack mechanics, and SRS rotation, built with React, TS, Socket.IO, and MongoDB.",
@@ -83,7 +116,6 @@ export const tetris: Project = {
 
 export const ufc: Project = {
   slug: "ufc",
-  image: { src: "/projects/ufc.png", alt: "image of UFC match predictor" },
   title: "UFC Match Predictor",
   description:
     "A C# machine learning application using ML.NET's Random Forest algorithm to predict UFC fight outcomes based on fighter statistics and differential performance metrics.",
@@ -101,10 +133,6 @@ export const ufc: Project = {
 
 export const esportsDash: Project = {
   slug: "esportsdash",
-  image: {
-    src: "/projects/esportsdash.png",
-    alt: "image of esports dashboard",
-  },
   title: "Esports Dash",
   description:
     "A real-time League of Legends esports dashboard built with Next.js that displays live matches, upcoming schedules, tournaments, and professional player profiles using PandaScore API data.",
@@ -120,4 +148,12 @@ export const esportsDash: Project = {
   repo: "https://github.com/KhasarMunkh/esportsdash",
 };
 
-export const projects = [goAscii, termfolio, soloLeveler, tetris, ufc, esportsDash];
+export const godo: Project = {
+  slug: "godo",
+  title: "Godo",
+  description: "A simple, directory-specific todo manager for your terminal.",
+  tags: ["Go", "CLI", "Productivity", "Shell"],
+  repo: "https://github.com/KhasarMunkh/godo",
+};
+
+export const projects = [goAscii, termfolio, soloLeveler, tetris, ufc, esportsDash, godo];

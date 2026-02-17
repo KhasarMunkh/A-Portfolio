@@ -6,10 +6,15 @@ import ThemePicker from "@/components/ThemePicker";
 export default function NavBar() {
   return (
     <header
-      className="sticky top-0 z-10 select-none
-    backdrop-blur-lg bg-base/80 border-b border-accent/10"
+      className="sticky top-0 z-10 h-24 p-5 pb-10 select-none"
+      style={{
+        mask: "linear-gradient(black, black, transparent)",
+        WebkitMask: "linear-gradient(black, black, transparent)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+      }}
     >
-      <div className="flex h-15 items-center justify-between px-8 md:px-16 lg:px-24">
+      <div className="mx-auto flex h-full max-w-[1800px] items-center justify-between px-4">
         <Breadcrumb />
         <nav className="flex items-center gap-6">
           <Link href="/">Home</Link>

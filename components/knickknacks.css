@@ -1,6 +1,7 @@
 @theme inline {
   --animate-pop: pop 0.6s ease-out forwards;
   --animate-pad-flash: pad-flash 0.15s ease-out;
+  --animate-cursor-blink: cursor-blink 1s step-end infinite;
 }
 
 @keyframes pop {
@@ -16,11 +17,23 @@
 
 @keyframes pad-flash {
   0% {
+    opacity: 1;
     filter: brightness(1.4);
     transform: scale(0.93);
   }
   100% {
+    opacity: 0.7;
     filter: brightness(1);
     transform: scale(1);
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
