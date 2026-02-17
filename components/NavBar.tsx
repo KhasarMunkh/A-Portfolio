@@ -5,22 +5,23 @@ import ThemePicker from "@/components/ThemePicker";
 
 export default function NavBar() {
   return (
-    <header
-      className="sticky top-0 z-10 h-24 p-5 pb-10 select-none"
-      style={{
-        mask: "linear-gradient(black, black, transparent)",
-        WebkitMask: "linear-gradient(black, black, transparent)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-      }}
-    >
-      <div className="mx-auto flex h-full max-w-[1800px] items-center justify-between px-4">
+    <header className="sticky top-0 z-10 h-24 select-none">
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          mask: "linear-gradient(black, black, transparent)",
+          WebkitMask: "linear-gradient(black, black, transparent)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+        }}
+      />
+      <div className="relative mx-auto flex h-full max-w-[1800px] items-center justify-between p-5 pb-10 px-4">
         <Breadcrumb />
         <nav className="flex items-center gap-6">
           <Link href="/">Home</Link>
           <Link href="/projects">Projects</Link>
           <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
           <ThemePicker />
         </nav>
       </div>

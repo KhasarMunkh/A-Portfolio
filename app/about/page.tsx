@@ -102,7 +102,7 @@ export default function AboutPage() {
           </div>
           {/* Master rank badge */}
           <Image
-            src="/master.png"
+            src="/ranks/master.png"
             alt="Master rank"
             width={128}
             height={128}
