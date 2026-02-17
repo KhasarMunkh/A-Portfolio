@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../components/navbar.css";
+@import "../components/knickknacks.css";
 
 :root {
   --catppuccin-latte-rosewater: #dc8a78;

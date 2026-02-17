@@ -23,6 +23,7 @@ interface Language {
 interface CommitData {
     commits: Commit[];
     languages: Language[];
+    username: string;
 }
 
 export default function GitHubCommitsCard() {
@@ -31,7 +32,10 @@ export default function GitHubCommitsCard() {
 
     useEffect(() => {
         fetch("/api/github-commits")
-            .then((res) => res.json())
+            .then((res) => {
+                if (!res.ok) throw new Error(`API error: ${res.status}`);
+                return res.json();
+            })
             .then((json: CommitData) => {
                 setData(json);
                 setLoading(false);
@@ -67,7 +71,7 @@ export default function GitHubCommitsCard() {
                     {/* Commit list */}
                     {data.commits.length > 0 ? (
                         <ul className="space-y-1.5 text-sm">
-                            {data.commits.slice(0, 4).map((commit) => (
+                            {data.commits.map((commit) => (
                                 <li key={commit.sha}>
                                     <a
                                         href={commit.href}
@@ -106,7 +110,7 @@ export default function GitHubCommitsCard() {
                     {/* Footer: GitHub link + language bar */}
                     <div className="mt-auto flex items-center gap-3">
                         <a
-                            href="https://github.com/KhasarMunkh"
+                            href={`https://github.com/${data.username}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="group text-accent inline-flex items-center gap-1.5 text-sm hover:underline"

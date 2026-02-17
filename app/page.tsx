@@ -3,6 +3,9 @@ import ThemePicker from "@/components/ThemePicker";
 import ContactCard from "@/components/ContactCard";
 import GitHubCommitsCard from "@/components/GitHubCommitsCard";
 import LoLRankCard from "@/components/LoLRankCard";
+import ClickerCard from "@/components/ClickerCard";
+import TypingTestCard from "@/components/TypingTestCard";
+import DrumPadCard from "@/components/DrumPadCard";
 import { goAscii, termfolio } from "@/lib/projects";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
@@ -89,10 +92,12 @@ export default function Home() {
             {/* Section 3: Knick Knacks */}
             <section className="px-4 md:px-0">
                 <div className="grid grid-cols-1 justify-center gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
-                    <ThemePicker />
                     <LoLRankCard />
                     <GitHubCommitsCard />
                     <ContactCard />
+                    <ClickerCard />
+                    <TypingTestCard />
+                    <DrumPadCard />
                 </div>
             </section>
         </div>
