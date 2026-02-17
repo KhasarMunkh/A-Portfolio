@@ -1,6 +1,5 @@
 # go-ascii
 
-
 I needed some custom text art for my nvim dashboard config and was learning go at the time. 
 So, I made a quick and easy cli tool in go to convert images into ASCII, ANSI, or Braille text art right from your terminal!
 
@@ -36,7 +35,10 @@ go-ascii --mode ascii|ansi|braille --width <cols> [--out <file or ->] <image fil
 - `<image>`  : Path to image file 
 
 ### Example
-<img width="1876" height="1107" alt="2025-09-03-171404_hyprshot" src="https://github.com/user-attachments/assets/aabfa63c-fc79-4b4f-9781-5ec75d24d0a7" />
+
+![Example Output](/projects/go-ascii.png)
+
+```sh
 
 ## License
 MIT

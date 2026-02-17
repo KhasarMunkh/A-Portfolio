@@ -18,11 +18,11 @@ export default function NavBar() {
       />
       <div className="relative mx-auto flex h-full max-w-[1800px] items-center justify-between p-5 pb-10 px-4">
         <Breadcrumb />
-        <nav className="flex items-center gap-6">
-          <Link href="/">Home</Link>
-          <Link href="/projects">Projects</Link>
-          <Link href="/about">About</Link>
-          <Link href="/resume">Resume</Link>
+        <nav className="flex items-center gap-6 text-subtext1">
+          <Link className="transition-colors duration-200 ease-out hover:text-accent" href="/">Home</Link>
+          <Link className="transition-colors duration-200 ease-out hover:text-accent" href="/projects">Projects</Link>
+          <Link className="transition-colors duration-200 ease-out hover:text-accent" href="/about">About</Link>
+          <Link className="transition-colors duration-200 ease-out hover:text-accent" href="/resume">Resume</Link>
           <ThemePicker />
         </nav>
       </div>
