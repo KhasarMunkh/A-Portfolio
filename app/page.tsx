@@ -57,7 +57,7 @@ export default async function Home() {
                             {" "}
                             League of Legends{" "}
                         </span>
-                        at a Master’s level.
+                        at an <span className="font-bold text-accent">atleast</span> Master’s level.
                     </p>
                     <div className="flex gap-3">
                         <Link

@@ -21,6 +21,10 @@ import {
   SiDotnet,
   SiExpo,
   SiExpress,
+  SiC,
+  SiCplusplus,
+  SiPython,
+  SiGnubash,
 } from "react-icons/si";
 import { PiCodeBold, PiGameControllerBold } from "react-icons/pi";
 import type { IconType } from "react-icons";
@@ -36,6 +40,10 @@ const languages: Skill[] = [
   { name: "TypeScript", icon: SiTypescript, color: "text-blue" },
   { name: "Go", icon: FaGolang, color: "text-sky" },
   { name: "C# / .NET", icon: SiDotnet, color: "text-mauve" },
+  { name: "C", icon: SiC, color: "text-blue" },
+  { name: "C++", icon: SiCplusplus, color: "text-lavender" },
+  { name: "Python", icon: SiPython, color: "text-yellow" },
+  { name: "Bash", icon: SiGnubash, color: "text-green" },
 ];
 
 const frameworks: Skill[] = [
