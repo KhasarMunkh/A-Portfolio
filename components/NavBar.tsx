@@ -22,6 +22,7 @@ export default function NavBar() {
           <Link href="/">Home</Link>
           <Link href="/projects">Projects</Link>
           <Link href="/about">About</Link>
+          <Link href="/resume">Resume</Link>
           <ThemePicker />
         </nav>
       </div>

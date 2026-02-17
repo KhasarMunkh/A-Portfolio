@@ -70,7 +70,7 @@ export default function TerminalCard({
                 alt={`${owner}'s avatar`}
                 width={44}
                 height={44}
-                className="rounded-md"
+                className="rounded-full"
               />
             ) : (
               <div />
