@@ -35,14 +35,25 @@ export default function Footer() {
     const initialTimeRef = useRef<number>(0);
 
     useEffect(() => {
+        let stored = 0;
+        try {
+            const raw = localStorage.getItem("total-time-on-site");
+            if (raw) stored = JSON.parse(raw) ?? 0;
+        } catch {}
+
         sessionStartRef.current = Date.now();
-        initialTimeRef.current = totalTime;
+        initialTimeRef.current = stored;
 
         const interval = setInterval(() => {
             const sessionElapsed = Math.floor(
                 (Date.now() - sessionStartRef.current) / 1000,
             );
-            setDisplayTime(formatTime(initialTimeRef.current + sessionElapsed));
+            const total = initialTimeRef.current + sessionElapsed;
+            setDisplayTime(formatTime(total));
+
+            if (sessionElapsed > 0 && sessionElapsed % 10 === 0) {
+                setTotalTime(total);
+            }
         }, 1000);
 
         const saveTime = () => {
