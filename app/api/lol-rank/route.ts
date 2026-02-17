@@ -35,7 +35,25 @@ export async function GET() {
         },
     );
 
-    const entries: LeagueEntry[] = await res.json(); // Ensure the response is fully consumed before returning
+    if (!res.ok) {
+        console.error(`Riot API responded with ${res.status}: ${res.statusText}`);
+        return NextResponse.json(
+            { tier: "UNRANKED", rank: "", leaguePoints: 0, wins: 0, losses: 0 },
+            { status: 502 },
+        );
+    }
+
+    const body = await res.json();
+
+    if (!Array.isArray(body)) {
+        console.error("Riot API returned unexpected response:", body);
+        return NextResponse.json(
+            { tier: "UNRANKED", rank: "", leaguePoints: 0, wins: 0, losses: 0 },
+            { status: 502 },
+        );
+    }
+
+    const entries: LeagueEntry[] = body;
     const solo = entries.find((e) => e.queueType === "RANKED_SOLO_5x5");
 
     if (!solo) {

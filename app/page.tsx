@@ -1,6 +1,7 @@
 import ProjectCard from "@/components/ProjectCard";
 import ThemePicker from "@/components/ThemePicker";
 import ContactCard from "@/components/ContactCard";
+import GitHubCommitsCard from "@/components/GitHubCommitsCard";
 import LoLRankCard from "@/components/LoLRankCard";
 import { goAscii, termfolio } from "@/lib/projects";
 import Image from "next/image";
@@ -90,7 +91,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 justify-center gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
                     <ThemePicker />
                     <LoLRankCard />
-                    <ContactCard />
+                    <GitHubCommitsCard />
                     <ContactCard />
                 </div>
             </section>

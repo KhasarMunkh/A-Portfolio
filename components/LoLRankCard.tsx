@@ -77,12 +77,12 @@ export default function LoLRankCard() {
                 <>
                     {/* Tier emblem */}
                     {tierImage && (
-                        <div className="relative mx-auto aspect-373/231 w-full">
+                        <div className="relative mx-auto size-28">
                             <Image
                                 src={tierImage}
                                 alt={`${data.tier} emblem`}
                                 fill
-                                className="object-contain drop-shadow-lg pointer-events-none select-none scale-200"
+                                className="object-contain drop-shadow-lg pointer-events-none select-none"
                             />
                         </div>
                     )}
