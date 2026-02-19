@@ -16,25 +16,55 @@ function useBestWpm(): [number, (value: number) => void] {
     return [wpm, bestWpmStore.set];
 }
 
-const snippets = [
-    'const add = (a: number, b: number) => a + b;',
-    'function greet(name: string) { return `Hello, ${name}!`; }',
-    'const nums = [1, 2, 3].map((n) => n * 2);',
-    'export default function App() { return <h1>Hello</h1>; }',
-    'const [count, setCount] = useState(0);',
-    'type Result<T> = { ok: true; value: T } | { ok: false };',
-    'const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));',
-    'for (const key of Object.keys(obj)) { console.log(key); }',
-    'const unique = [...new Set(items)];',
-    'if (err instanceof Error) throw err;',
+const words = [
+    "the", "be", "to", "of", "and", "a", "in", "that", "have", "i",
+    "it", "for", "not", "on", "with", "he", "as", "you", "do", "at",
+    "this", "but", "his", "by", "from", "they", "we", "say", "her", "she",
+    "or", "an", "will", "my", "one", "all", "would", "there", "their", "what",
+    "so", "up", "out", "if", "about", "who", "get", "which", "go", "me",
+    "when", "make", "can", "like", "time", "no", "just", "him", "know", "take",
+    "people", "into", "year", "your", "good", "some", "could", "them", "see", "other",
+    "than", "then", "now", "look", "only", "come", "its", "over", "think", "also",
+    "back", "after", "use", "two", "how", "our", "work", "first", "well", "way",
+    "even", "new", "want", "because", "any", "these", "give", "day", "most", "us",
+    "great", "between", "need", "large", "under", "never", "same", "last", "long", "much",
+    "right", "where", "before", "must", "home", "big", "high", "end", "still", "each",
+    "old", "life", "tell", "write", "become", "here", "show", "house", "both", "again",
+    "off", "turn", "real", "leave", "might", "part", "point", "own", "place", "world",
+    "around", "small", "while", "found", "keep", "move", "every", "hand", "light", "help",
+    "thought", "through", "city", "head", "open", "start", "night", "close", "such", "kind",
+    "begin", "next", "live", "walk", "change", "hard", "play", "run", "read", "name",
+    "let", "down", "line", "school", "number", "away", "ask", "may", "thing", "man",
+    "should", "few", "water", "been", "call", "far", "until", "try", "enough", "set",
+    "child", "side", "put", "form", "too", "state", "stand", "very", "often", "fact",
+    "feel", "group", "early", "girl", "eye", "face", "many", "young", "story", "hold",
+    "later", "always", "many", "best", "better", "love", "power", "study", "learn", "grow",
+    "plant", "food", "fish", "earth", "tree", "body", "mind", "room", "heart", "door",
+    "stop", "wait", "plan", "table", "love", "sure", "watch", "color", "above", "book",
+    "music", "paper", "ready", "idea", "land", "along", "river", "fire", "care", "voice",
+    "rest", "deep", "fast", "warm", "able", "free", "strong", "word", "clear", "near",
+    "dark", "past", "road", "game", "half", "order", "field", "air", "south", "north",
+    "east", "west", "sleep", "class", "piece", "carry", "break", "drive", "cross", "draw",
+    "build", "horse", "white", "black", "bring", "front", "quite", "happy", "today", "blue",
+    "full", "green", "simple", "reach", "team", "boat", "teach", "pull", "less", "more",
 ];
+
+function generateWords(count: number): string {
+    const result: string[] = [];
+    for (let i = 0; i < count; i++) {
+        result.push(words[Math.floor(Math.random() * words.length)]);
+    }
+    return result.join(" ");
+}
+
+const WORD_COUNT = 25;
 
 type Phase = "idle" | "typing" | "done";
 
 export default function TypingTestCard() {
     const [bestWpm, setBestWpm] = useBestWpm();
     const [phase, setPhase] = useState<Phase>("idle");
-    const [snippet, setSnippet] = useState(() => snippets[0]);
+    const [text, setText] = useState("");
     const [typed, setTyped] = useState("");
     const [startTime, setStartTime] = useState(0);
     const [wpm, setWpm] = useState(0);
@@ -42,26 +72,20 @@ export default function TypingTestCard() {
     const inputRef = useRef<HTMLInputElement>(null);
     const errorCount = useRef(0);
 
-    const pickSnippet = useCallback(() => {
-        const next = snippets[Math.floor(Math.random() * snippets.length)];
-        return next;
+    // Regenerate words on mount so SSR/client mismatch is avoided
+    useEffect(() => {
+        setText(generateWords(WORD_COUNT));
     }, []);
 
     const startNew = useCallback(() => {
-        setSnippet(pickSnippet());
+        setText(generateWords(WORD_COUNT));
         setTyped("");
         setPhase("idle");
         setWpm(0);
         setAccuracy(100);
         errorCount.current = 0;
-        // Focus the hidden input after state settles
         setTimeout(() => inputRef.current?.focus(), 0);
-    }, [pickSnippet]);
-
-    // Initialize with a random snippet on mount
-    useEffect(() => {
-        setSnippet(pickSnippet());
-    }, [pickSnippet]);
+    }, []);
 
     const handleInput = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,15 +104,15 @@ export default function TypingTestCard() {
             // Count errors for this keystroke
             if (value.length > typed.length) {
                 const i = value.length - 1;
-                if (i < snippet.length && value[i] !== snippet[i]) {
+                if (i < text.length && value[i] !== text[i]) {
                     errorCount.current++;
                 }
             }
 
             // Check completion
-            if (value.length >= snippet.length) {
-                const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
-                const charCount = snippet.length;
+            if (value.length >= text.length) {
+                const elapsed = (Date.now() - startTime) / 1000 / 60;
+                const charCount = text.length;
                 const calculatedWpm =
                     elapsed > 0 ? Math.round(charCount / 5 / elapsed) : 0;
                 const totalKeystrokes = value.length;
@@ -110,13 +134,17 @@ export default function TypingTestCard() {
                 }
             }
         },
-        [phase, typed, snippet, startTime, bestWpm, setBestWpm],
+        [phase, typed, text, startTime, bestWpm, setBestWpm],
     );
 
     // Focus input when card is clicked
     const handleCardClick = useCallback(() => {
         inputRef.current?.focus();
     }, []);
+
+    // Split text into words for display
+    const textWords = text.split(" ");
+    let charIndex = 0;
 
     return (
         <div
@@ -149,24 +177,56 @@ export default function TypingTestCard() {
                 </div>
             </div>
 
-            {/* Snippet display */}
-            <div className="rounded-lg bg-surface0/50 px-3 py-4 font-mono text-sm leading-relaxed">
-                {snippet.split("").map((char, i) => {
-                    let colorClass = "text-overlay1";
-                    if (i < typed.length) {
-                        colorClass =
-                            typed[i] === char ? "text-green" : "text-red bg-red/10";
-                    }
-                    // Cursor at current position
-                    const isCursor =
-                        i === typed.length && phase !== "done";
+            {/* Word display */}
+            <div className="rounded-lg bg-surface0/50 px-3 py-4 font-mono text-sm leading-loose">
+                {textWords.map((word, wi) => {
+                    const wordStart = charIndex;
+                    charIndex += word.length + (wi < textWords.length - 1 ? 1 : 0);
 
                     return (
-                        <span
-                            key={i}
-                            className={`${colorClass} ${isCursor ? "border-accent border-l-2" : ""}`}
-                        >
-                            {char}
+                        <span key={wi} className="inline">
+                            {word.split("").map((char, ci) => {
+                                const absIndex = wordStart + ci;
+                                let colorClass = "text-overlay1";
+                                if (absIndex < typed.length) {
+                                    colorClass =
+                                        typed[absIndex] === char
+                                            ? "text-text"
+                                            : "text-red bg-red/10";
+                                }
+                                const isCursor =
+                                    absIndex === typed.length && phase !== "done";
+
+                                return (
+                                    <span
+                                        key={ci}
+                                        className={`${colorClass} ${isCursor ? "border-accent border-l-2" : ""}`}
+                                    >
+                                        {char}
+                                    </span>
+                                );
+                            })}
+                            {/* Space after word */}
+                            {wi < textWords.length - 1 && (() => {
+                                const spaceIndex = wordStart + word.length;
+                                let spaceClass = "text-overlay1";
+                                if (spaceIndex < typed.length) {
+                                    spaceClass =
+                                        typed[spaceIndex] === " "
+                                            ? "text-text"
+                                            : "text-red bg-red/10";
+                                }
+                                const isSpaceCursor =
+                                    spaceIndex === typed.length && phase !== "done";
+
+                                return (
+                                    <span
+                                        className={`${spaceClass} ${isSpaceCursor ? "border-accent border-l-2" : ""}`}
+                                    >
+                                        {" "}
+                                    </span>
+                                );
+                            })()}
                         </span>
                     );
                 })}
@@ -179,7 +239,7 @@ export default function TypingTestCard() {
                 value={typed}
                 onChange={handleInput}
                 className="sr-only"
-                aria-label="Type the snippet shown above"
+                aria-label="Type the words shown above"
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
@@ -195,9 +255,7 @@ export default function TypingTestCard() {
                     </span>
                 )}
                 {phase === "typing" && (
-                    <span className="text-subtext0">
-                        {typed.length}/{snippet.length} characters
-                    </span>
+                    <span className="text-subtext0">typing...</span>
                 )}
                 {phase === "done" && (
                     <>
